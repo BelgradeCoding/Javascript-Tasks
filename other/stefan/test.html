@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>My Tests</title>
+</head>
+
+<body>
+
+    <h1>My Tests</h1>
+
+
+
+
+
+
+    <script>
+
+        let msg = "";
+        function log(...params) {
+            msg += params.join(" ") + "\n";
+        }
+
+        function xxx() {
+            var a = 1;
+            var b = 2;
+            function sum(x, y) {
+                return x + y
+            };
+            log(sum(a, b));
+
+            console.log(msg);
+        }
+
+        xxx();
+
+
+    </script>
+
+
+
+</body>
+
+</html>
