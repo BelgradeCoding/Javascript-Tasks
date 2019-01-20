@@ -30,7 +30,8 @@ var str = `var kme = 23;var kme1 = 32;var kme2 = 12;
   var kme = 23;var kme1 = 32;var kme2 = 12;
   `;
 
-var assigment = [`var alfa = 2;
+var assigment = [
+  `var alfa = 2;
   var beta = 3;
   var gama = 10;
   var sigma = 2;
@@ -70,23 +71,22 @@ var context = canvas.getContext("2d");
 context.font = "1.1rem Georgia";
 context.fillStyle = "blue";
 
-
-
 function colorCanvas(task) {
-  
-  
   for (var k = 0; k < task.length; k++) {
     var line = task[k];
-    
+
     y += yIndex;
-    texterBlue(line, 0, y);
+    texter(line, 0, y);
   }
 }
 colorCanvas(ass);
 
-
-function texterBlue(str, x, y) {
-  var strInfo = getAllIndexes(str, ["var", "function"]);
+function texter(str, x, y) {
+  var strInfo = getAllIndexes(str, ["var", "function", "=", "return","console.log"]);
+  var kme = getAllNumbers(str);
+  if(kme){
+    strInfo.push(kme);
+  } 
   var indexes = [];
   for (const key in strInfo) {
     if (strInfo.hasOwnProperty(key)) {
@@ -94,34 +94,42 @@ function texterBlue(str, x, y) {
       indexes.push(element.index);
     }
   }
-   len = 3, z = 1;
-            z = 2;
-            z = 3;      
-  for(var i=0,z=0;i < str.length;i++){
+  
+  
+  for (var i = 0, z = 0; i < str.length; i++) {
     var ch = str.charAt(i);
     var position = indexes.indexOf(i);
-    if(position >= 0){
-       for(var j=0;j < strInfo[position]["len"];j++){
-         ch = str.charAt(i + j);
-         colorFillChange(ch, x, y, "#832cd6");
-         x += context.measureText(ch).width;
-         z++;
-         if(z == strInfo[position]["len"]){
+    if (position >= 0) {
+      for (var j = 0; j < strInfo[position]["len"]; j++) {
+        // vars and function
+        ch = str.charAt(i + j);
+        if (
+          strInfo[position].name === "var" ||
+          strInfo[position].name === "function"
+        ) {
+          colorFillChange(ch, x, y, "red");
+        } else if (strInfo[position].name === "return") {
+          colorFillChange(ch, x, y, "purple");
+        } else if (strInfo[position].name === "=") {
+          colorFillChange(ch, x, y, "gray");
+        } else if (strInfo[position].name === "number"){
+          colorFillChange(ch, x, y, "green");
+        } else if (strInfo[position].name === "console.log"){
+          colorFillChange(ch, x, y, "blue");
+        }
+        x += context.measureText(ch).width;
+        z++;
+        if (z == strInfo[position]["len"]) {
           z = 0;
           i += strInfo[position]["len"] - 1;
           break;
-         }
-       }
-       
-       
+        }
+      }
     } else {
-      colorFillChange(ch,x,y,"black");
+      colorFillChange(ch, x, y, "black");
       x += context.measureText(ch).width;
     }
-    
   }
-  
-  
 }
 
 function colorFillChange(char, x, y, color) {
@@ -146,6 +154,26 @@ function getAllIndexes(arr, val) {
   }
   return indexes;
 }
+function getAllNumbers(str) {
+  var re = /\d+/g,
+    str = str;
+  tmpArr = [];
+  while ((match = re.exec(str)) != null) {
+    tmpArr.push(match);
+  }
+  if(tmpArr.length > 0){
+    return {
+      name:"number",
+      index:tmpArr[0].index,
+      len: tmpArr[0][0].length
+    }
+  }
+  
+}
+var lala = "weaedsa32321";
+var kkk = getAllNumbers(lala);
+
+
 function removeEmptyObj(arr) {
   if (arr != undefined) {
     var tmp = JSON.stringify(
@@ -158,4 +186,3 @@ function removeEmptyObj(arr) {
     return undefined;
   }
 }
-
