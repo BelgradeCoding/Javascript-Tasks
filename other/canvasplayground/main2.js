@@ -37,6 +37,9 @@ var ass = `var alfa = 2;
           var omega = 5;
           console.log("alfa", alfa, "beta", beta);
           function zeta() {
+            function govno(){ var
+
+            };
               var alfa = 0;
               var beta = 1;
               console.log("alfa", alfa, "beta", beta);
@@ -66,7 +69,6 @@ function colorCanvas(assigment, ySpacing) {
   
   for (var k = 0; k < ass.length; k++) {
     var line = ass[k];
-    console.log(line);
     texterBlue(line, 0, y);
     y += yIndex;
   }
@@ -75,9 +77,10 @@ colorCanvas(ass);
 
 
 function texterBlue(str, x, y) {
-  var indexes = getAllIndexes(str, ["var", "function"]);
+  var indexes = getAllIndexes(str, ["var", "function","return"]);
   var final = removeEmptyObj(indexes);
-
+  console.log(str,indexes,final);
+  
   if (final != undefined) {
     var startAt = final[0].index;
     var range = final[0].len;
@@ -107,7 +110,7 @@ function texterBlue(str, x, y) {
       i += final[1].len - 1;
     } else {
       colorFillChange(ch, x, y, "black");
-      x += context.measureText(ch).width;
+      x += context.measureText(ch).width; 
     }
   }
 }
@@ -122,7 +125,6 @@ function getAllIndexes(arr, val) {
     i = -1;
   for (var k = 0; k < val.length; k++) {
     while ((i = arr.indexOf(val[k], i + 1)) != -1) {
-      console.log(i, val[k]);
       indexes.push({
         name: val[k],
         index: i,
