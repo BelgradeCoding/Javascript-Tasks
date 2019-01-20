@@ -32,17 +32,18 @@ var str = `var kme = 23;var kme1 = 32;var kme2 = 12;
 
 var assigment = [
   `var alfa = 2;
-  var beta = 3;
-  var gama = 10;
-  var sigma = 2;
-  var jota = (function (){
-          omega = 3;
-          var beta = 6;
-          console.log("alfa", alfa, "gama", gama);
-          var teta = zeta()[0]();
-          var sigma = 6;
-          var omega = 5;
-          console.log("alfa", alfa, "beta", beta);
+var beta = 3;
+var gama = 10;
+var sigma = 2;
+var test = "test";
+var jota = (function (){
+        omega = 3;
+        var beta = 6;
+        console.log("alfa", alfa, "gama", gama);
+        var teta = zeta()[0]();
+        var sigma = 6;
+        var omega = 5;
+        console.log("alfa", alfa, "beta", beta);
           function zeta() {
               var alfa = 0;
               var beta = 1;
@@ -60,7 +61,7 @@ var assigment = [
   `
 ];
 var y = 0;
-var yIndex = 15;
+var yIndex = 18;
 var ass = assigment[0].split("\n");
 var canvasHeight = ass.length * yIndex + 10;
 
@@ -82,11 +83,26 @@ function colorCanvas(task) {
 colorCanvas(ass);
 
 function texter(str, x, y) {
-  var strInfo = getAllIndexes(str, ["var", "function", "=", "return","console.log"]);
-  var kme = getAllNumbers(str);
-  if(kme){
-    strInfo.push(kme);
-  } 
+  var strInfo = getAllIndexes(str, [
+    "var",
+    "function",
+    "=",
+    "return",
+    "console.log"
+  ]);
+  var numbers = getAllNumbers(str);
+  var strings = getAllStrings(str);
+  
+  
+  console.log(strings,numbers,strInfo);
+  
+  if (numbers && strInfo) {
+    strInfo = strInfo.concat(numbers);
+  }
+  if(strings && strInfo){
+    strInfo = strInfo.concat(strings);
+  }
+
   var indexes = [];
   for (const key in strInfo) {
     if (strInfo.hasOwnProperty(key)) {
@@ -94,8 +110,7 @@ function texter(str, x, y) {
       indexes.push(element.index);
     }
   }
-  
-  
+
   for (var i = 0, z = 0; i < str.length; i++) {
     var ch = str.charAt(i);
     var position = indexes.indexOf(i);
@@ -112,10 +127,12 @@ function texter(str, x, y) {
           colorFillChange(ch, x, y, "purple");
         } else if (strInfo[position].name === "=") {
           colorFillChange(ch, x, y, "gray");
-        } else if (strInfo[position].name === "number"){
+        } else if (strInfo[position].name === "number") {
           colorFillChange(ch, x, y, "green");
-        } else if (strInfo[position].name === "console.log"){
+        } else if (strInfo[position].name === "console.log") {
           colorFillChange(ch, x, y, "blue");
+        } else if (strInfo[position].name === "string"){
+          colorFillChange(ch, x, y, "orange");
         }
         x += context.measureText(ch).width;
         z++;
@@ -159,20 +176,33 @@ function getAllNumbers(str) {
     str = str;
   tmpArr = [];
   while ((match = re.exec(str)) != null) {
-    tmpArr.push(match);
-  }
-  if(tmpArr.length > 0){
-    return {
+    var obj = {
       name:"number",
-      index:tmpArr[0].index,
-      len: tmpArr[0][0].length
+      index:match["index"],
+      len: match[0].length
     }
+    tmpArr.push(obj);
   }
+  return tmpArr;
+  // To - do - Improve by returning all instances of a number,not just first.
+}
+function getAllStrings(str) {
+  var re = /\".*?\"/g,
+    str = str;
+  tmpArr = [];
+  while ((match = re.exec(str)) != null) {
+    var obj = {
+      name:"string",
+      index:match["index"],
+      len: match[0].length
+    }
+    
+    
+    tmpArr.push(obj);
+  }
+  return tmpArr;
   
 }
-var lala = "weaedsa32321";
-var kkk = getAllNumbers(lala);
-
 
 function removeEmptyObj(arr) {
   if (arr != undefined) {
