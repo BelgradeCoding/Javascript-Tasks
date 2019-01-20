@@ -1,5 +1,3 @@
-// var canvas = document.getElementById("myCanvas");
-// var ctx = canvas.getContext("2d");
 var PIXEL_RATIO = (function() {
   var ctx = document.createElement("canvas").getContext("2d"),
     dpr = window.devicePixelRatio || 1,
@@ -24,20 +22,20 @@ createHiDPICanvas = function(w, h, ratio) {
   can.style.height = h + "px";
   can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
   return can;
-}; 
+};
+var str = `var kme = 23;var kme1 = 32;var kme2 = 12;
+  var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
+  var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
+  var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
+  var kme = 23;var kme1 = 32;var kme2 = 12;
+  `;
 
-var names = [
-  {
-    a: "kme",
-    b: "kme1",
-    c: "kme2"
-  }
-];
-var kme = 12;
-var ass = `var alfa = 2;
+var assigment = [
+  `var alfa = 2;
 var beta = 3;
 var gama = 10;
 var sigma = 2;
+var test = "test";
 var jota = (function (){
         omega = 3;
         var beta = 6;
@@ -46,152 +44,175 @@ var jota = (function (){
         var sigma = 6;
         var omega = 5;
         console.log("alfa", alfa, "beta", beta);
-        function zeta() {
-            var alfa = 0;
-            var beta = 1;
-            console.log("alfa", alfa, "beta", beta);
-            return [function(){
-                var alfa = 8;
-                beta = 5;
-                console.log("alfa", alfa, "beta", beta);
-            }]
-        }
-    return zeta();
-})();`;
-ass = ass.split("\n");
-var yIndex = 14;
+          function zeta() {
+              var alfa = 0;
+              var beta = 1;
+              console.log("alfa", alfa, "beta", beta);
+              return [function(){
+                  var alfa = 8;
+                  beta = 5;
+                  console.log("alfa", alfa, "beta", beta);
+              }]
+          }
+      return zeta();
+  })();`,
+  `var alpha = 23;varbetavargamefunction
+  var kuracvar penis varkfoavarvkdavar
+  `
+];
+var y = 0;
+var yIndex = 18;
+var ass = assigment[0].split("\n");
 var canvasHeight = ass.length * yIndex + 10;
 
+// canvas init
 var canvas = createHiDPICanvas(600, canvasHeight, 1);
 document.body.appendChild(canvas);
 var context = canvas.getContext("2d");
-
-context.font = "1rem Georgia";
+context.font = "1.1rem Georgia";
 context.fillStyle = "blue";
-console.log("canvas height", canvasHeight);
 
-var kk = [];
-var size = 0;
-var y = 0;
-for (var i = 0; i < ass.length; i++) {
-  var line = ass[i];
-  kk.push(line);
-  y += yIndex;
-  let check = filterKeywords(line);
-  console.log(check);
-  texter(line,0,y)
-  // console.log(line);
-  // if(line.indexOf("var") != -1){
-  //   texter(line, 0, y, "var");
-  // } else if(line.indexOf("function") != -1){
-  //   texter(line, 0, y, "function");
-  // } else {
-  //   texter(line, 0, y, undefined);
-  // }
-  
-  
-  if (line.length > size) {
-    size = line.length;
+function colorCanvas(task) {
+  for (var k = 0; k < task.length; k++) {
+    var line = task[k];
+
+    y += yIndex;
+    texter(line, 0, y);
   }
 }
-function filterKeywords(str){
-    var indexVar = str.match(/var/);
-    if(indexVar != null){
-      var infoVar = indexVar;
-      var placeInStr = infoVar.index;
-      return [placeInStr,infoVar[0],infoVar[0].length];
-    }
-}
+colorCanvas(ass);
 
-var endStr = kk.join("\n");
-
-for (var i = 0; i < endStr.length; i++) {}
-function randomColor() {
-  var r = Math.floor(Math.random() * 256);
-  var g = Math.floor(Math.random() * 256);
-  var b = Math.floor(Math.random() * 256);
-  return "rgb(" + r + "," + g + "," + b + ")";
-}
-var colorObj = {};
-function texter(str, x, y, reg) {
-    if(reg != undefined){
-        var len = reg.length;
-        var regTerm = new RegExp(`${reg}`);
-        var indexOfVar = str.search(regTerm);
-    }
-  // nova funkcija koja vraca parametre kao objekat,niz
-  // Uzimanje brojeva, stringova ?!?
+function texter(str, x, y) {
+  var strInfo = getAllIndexes(str, [
+    "var",
+    "function",
+    "=",
+    "return",
+    "console.log"
+  ]);
+  var numbers = getAllNumbers(str);
+  var strings = getAllStrings(str);
   
-  for (var i = 0; i <= str.length; ++i) {
+  
+  console.log(strings,numbers,strInfo);
+  
+  if (numbers && strInfo) {
+    strInfo = strInfo.concat(numbers);
+  }
+  if(strings && strInfo){
+    strInfo = strInfo.concat(strings);
+  }
+
+  var indexes = [];
+  for (const key in strInfo) {
+    if (strInfo.hasOwnProperty(key)) {
+      const element = strInfo[key];
+      indexes.push(element.index);
+    }
+  }
+
+  for (var i = 0, z = 0; i < str.length; i++) {
     var ch = str.charAt(i);
-    if (i == indexOfVar) {
-      for (var j = 0; j < len; j++) {
-        console.log("prvo i", i, "index Var", indexOfVar, "karakter", ch);
+    var position = indexes.indexOf(i);
+    if (position >= 0) {
+      for (var j = 0; j < strInfo[position]["len"]; j++) {
+        // vars and function
         ch = str.charAt(i + j);
-        if (reg === "var") {
-          console.log("crveno");
-          context.fillStyle = "#569cd6";
-        } else if(reg === "function"){
-          context.fillStyle = "purple";
+        if (
+          strInfo[position].name === "var" ||
+          strInfo[position].name === "function"
+        ) {
+          colorFillChange(ch, x, y, "red");
+        } else if (strInfo[position].name === "return") {
+          colorFillChange(ch, x, y, "purple");
+        } else if (strInfo[position].name === "=") {
+          colorFillChange(ch, x, y, "gray");
+        } else if (strInfo[position].name === "number") {
+          colorFillChange(ch, x, y, "green");
+        } else if (strInfo[position].name === "console.log") {
+          colorFillChange(ch, x, y, "blue");
+        } else if (strInfo[position].name === "string"){
+          colorFillChange(ch, x, y, "orange");
         }
-        context.fillText(ch, x, y);
         x += context.measureText(ch).width;
-        console.log("drugo i", i);
-      }
-      i += len - 1;
-    } else {
-        if(ch == "="){
-            context.fillStyle = "gray";
-        } else {
-            context.fillStyle = "#9cdcfe";
+        z++;
+        if (z == strInfo[position]["len"]) {
+          z = 0;
+          i += strInfo[position]["len"] - 1;
+          break;
         }
-      
-      context.fillText(ch, x, y);
+      }
+    } else {
+      colorFillChange(ch, x, y, "black");
       x += context.measureText(ch).width;
     }
-    //context.fillStyle = "red";
   }
 }
 
-
-var str = `var kme = 23;var kme1 = 32;var kme2 = 12;
-var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
-var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
-var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
-var kme = 23;var kme1 = 32;var kme2 = 12;
-`;
-function chunkString(str, n) {
-  return str.match(new RegExp("(.|[\r\n]){1," + n + "}", "g"));
+function colorFillChange(char, x, y, color) {
+  context.fillStyle = color;
+  context.fillText(char, x, y);
 }
-var str2 = chunkString(str, 20);
 
-function getValues(obj) {
-  var tmp = [];
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      tmp.push(obj[key]);
+function getAllIndexes(arr, val) {
+  var indexes = [],
+    i = -1;
+  for (var k = 0; k < val.length; k++) {
+    while ((i = arr.indexOf(val[k], i + 1)) != -1) {
+      indexes.push({
+        name: val[k],
+        index: i,
+        len: val[k].length
+      });
     }
   }
-  return tmp;
-}
-
-var values = getValues(names[0]);
-
-function makeRegex(regVals) {
-  var tmp = "";
-  for (var i = 0; i < regVals.length; i++) {
-    tmp += `\\b${regVals[i]}\\b`;
-    if (i != regVals.length - 1) {
-      tmp += "|";
-    }
+  if (indexes.length == 0) {
+    return undefined;
   }
-  return tmp;
+  return indexes;
 }
-var regex = makeRegex(values);
+function getAllNumbers(str) {
+  var re = /\d+/g,
+    str = str;
+  tmpArr = [];
+  while ((match = re.exec(str)) != null) {
+    var obj = {
+      name:"number",
+      index:match["index"],
+      len: match[0].length
+    }
+    tmpArr.push(obj);
+  }
+  return tmpArr;
+  // To - do - Improve by returning all instances of a number,not just first.
+}
+function getAllStrings(str) {
+  var re = /\".*?\"/g,
+    str = str;
+  tmpArr = [];
+  while ((match = re.exec(str)) != null) {
+    var obj = {
+      name:"string",
+      index:match["index"],
+      len: match[0].length
+    }
+    
+    
+    tmpArr.push(obj);
+  }
+  return tmpArr;
+  
+}
 
-var reg = new RegExp(regex, "g");
-
-var kkk = str.search("var");
-str = str.replace(/var/g, (match, offset, string) => {
-  return "var";
-});
+function removeEmptyObj(arr) {
+  if (arr != undefined) {
+    var tmp = JSON.stringify(
+      arr.filter(function(el) {
+        return typeof el != "object" || Object.keys(el).length > 0;
+      })
+    );
+    return JSON.parse(tmp);
+  } else {
+    return undefined;
+  }
+}
