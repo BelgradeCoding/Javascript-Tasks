@@ -23,65 +23,10 @@ createHiDPICanvas = function(w, h, ratio) {
   can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
   return can;
 };
-var str = `var kme = 23;var kme1 = 32;var kme2 = 12;
-  var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
-  var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
-  var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
-  var kme = 23;var kme1 = 32;var kme2 = 12;
-  `;
-
 var assigment = [
-  `var alfa = 2;
-var beta = 3;
-var gama = 10;
-var sigma = 2;
-var test = "test";
-var jota = (function (){
-        omega = 3;
-        var beta = 6;
-        console.log("alfa", alfa, "gama", gama);
-        var teta = zeta()[0]();
-        var sigma = 6;
-        var omega = 5;
-        console.log("alfa", alfa, "beta", beta);
-          function zeta() {
-              var alfa = 0;
-              var beta = 1;
-              console.log("alfa", alfa, "beta", beta);
-              return [function(){
-                  var alfa = 8;
-                  beta = 5;
-                  console.log("alfa", alfa, "beta", beta);
-              }]
-          }
-      return zeta();
-  })();var alfa = 2;
-  var beta = 3;
-  var gama = 10;
-  var sigma = 2;
-  var test = "test";
-  var jota = (function (){
-          omega = 3;
-          var beta = 6;
-          console.log("alfa", alfa, "gama", gama);
-          var teta = zeta()[0]();
-          var sigma = 6;
-          var omega = 5;
-          console.log("alfa", alfa, "beta", beta);
-            function zeta() {
-                var alfa = 0;
-                var beta = 1;
-                console.log("alfa", alfa, "beta", beta);
-                return [function(){
-                    var alfa = 8;
-                    beta = 5;
-                    console.log("alfa", alfa, "beta", beta);
-                }]
-            }
-        return zeta();
-    })();var alfa = 2;
+  `var alfa = 2; var delta varka kajvar dksaovarkd var()
     var beta = 3;
-    var gama = 10;
+    var ajvar = 10;
     var sigma = 2;
     var test = "test";
     var jota = (function (){
@@ -103,59 +48,86 @@ var jota = (function (){
                   }]
               }
           return zeta();
-      })();var alfa = 2;
-      var beta = 3;
-      var gama = 10;
-      var sigma = 2;
-      var test = "test";
-      var jota = (function (){
-              omega = 3;
-              var beta = 6;
-              console.log("alfa", alfa, "gama", gama);
-              var teta = zeta()[0]();
-              var sigma = 6;
-              var omega = 5;
-              console.log("alfa", alfa, "beta", beta);
-                function zeta() {
-                    var alfa = 0;
-                    var beta = 1;
-                    console.log("alfa", alfa, "beta", beta);
-                    return [function(){
-                        var alfa = 8;
-                        beta = 5;
-                        console.log("alfa", alfa, "beta", beta);
-                    }]
-                }
-            return zeta();
-        })();var alfa = 2;
-        var beta = 3;
-        var gama = 10;
-        var sigma = 2;
-        var test = "test";
-        var jota = (function (){
-                omega = 3;
-                var beta = 6;
-                console.log("alfa", alfa, "gama", gama);
-                var teta = zeta()[0]();
-                var sigma = 6;
-                var omega = 5;
-                console.log("alfa", alfa, "beta", beta);
-                  function zeta() {
-                      var alfa = 0;
-                      var beta = 1;
-                      console.log("alfa", alfa, "beta", beta);
-                      return [function(){
-                          var alfa = 8;
-                          beta = 5;
-                          console.log("alfa", alfa, "beta", beta);
-                      }]
-                  }
-              return zeta();
-          })()aassasasa;`,
-  `var alpha = 23;varbetavargamefunction
-  var kuracvar penis varkfoavarvkdavar
-  `
+      })();`,
+  `var alpha = 23;varbetavargavarmefunction
+      var sdavar dasvar varkfoavarvkdavar
+      `
 ];
+var str = `var kme = 23;var kme1 = 32;var kme2 = 12;
+    var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
+    var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
+    var kme = 23;var kme1 = 32;var kme2 = 12;var kme = 23;var kme1 = 32;var kme2 = 12;
+    var kme = 23;var kme1 = 32;var kme2 = 12;
+    `;
+var config = {
+  searchTerms: ["var", "function", "=", "return", "console.log"]
+};
+
+// Objekat regExp izraza za razlicite keyworde
+
+let regObj;
+
+function buildObjFromArr(arr) {
+  var tmpObj = {};
+  arr.forEach(function(item) {
+    tmpObj[item] = {};
+  });
+  return tmpObj;
+}
+function writeRegexes(obj) {
+  for (const key in obj) {
+    if (key == "var") {
+      obj[key]["regExp"] = new RegExp("[\\W]?\\b(var)\\s\\b", "g");
+    } else if (key == "function") {
+      obj[key]["regExp"] = new RegExp("[\\W]?(function)\\b", "g");
+    } else if (key == "return") {
+      obj[key]["regExp"] = new RegExp("[\\W]?(return)\\b", "g");
+    } else if (key == "=") {
+      obj[key]["regExp"] = new RegExp("(=)", "g");
+    } else if (key == "console.log") {
+      obj[key]["regExp"] = new RegExp("[\\W]?\\b(console.log)\\b", "g");
+    }
+  }
+}
+function regObjInit() {
+  regObj = buildObjFromArr(config.searchTerms);
+  writeRegexes(regObj);
+}
+// Inicijacija objekta regularnih izraza
+regObjInit();
+
+function buildArrayFromObjKeys(obj) {
+  var tmpArr = [];
+  for (const key in obj) {
+    tmpArr.push(obj[key]["regExp"]);
+  }
+  return tmpArr;
+}
+
+buildArrayFromObjKeys(regObj);
+function getAllRegIndexes(str, regarr) {
+  var tmpArr = [];
+  for (var i = 0; i < regarr.length; i++) {
+    var re = regarr[i],
+      str = str;
+    try {
+      while ((match = re.exec(str)) != null) {
+        var position = str.indexOf(match[1].trim());
+        var obj = {
+          name: match[1],
+          index: position,
+          len: match[1].length
+        };
+        tmpArr.push(obj);
+      }
+    } catch {}
+  }
+
+  return tmpArr;
+
+  // To - do - Improve by returning all instances of a number,not just first.
+}
+
 var y = 0;
 var yIndex = 18;
 var ass = assigment[0].split("\n");
@@ -179,23 +151,17 @@ function colorCanvas(task) {
 colorCanvas(ass);
 
 function texter(str, x, y) {
-  var strInfo = getAllIndexes(str, [
-    "var",
-    "function",
-    "=",
-    "return",
-    "console.log"
-  ]);
+  var _arrayOfRegex = buildArrayFromObjKeys(regObj);
+  var strInfo = getAllRegIndexes(str, _arrayOfRegex);
+
+
   var numbers = getAllNumbers(str);
   var strings = getAllStrings(str);
-  
-  
-  console.log(strings,numbers,strInfo);
-  
+
   if (numbers && strInfo) {
     strInfo = strInfo.concat(numbers);
   }
-  if(strings && strInfo){
+  if (strings && strInfo) {
     strInfo = strInfo.concat(strings);
   }
 
@@ -218,16 +184,16 @@ function texter(str, x, y) {
           strInfo[position].name === "var" ||
           strInfo[position].name === "function"
         ) {
-          colorFillChange(ch, x, y, "red");
+          colorFillChange(ch, x, y, "blue");
         } else if (strInfo[position].name === "return") {
-          colorFillChange(ch, x, y, "purple");
+          colorFillChange(ch, x, y, "#C586C0");
         } else if (strInfo[position].name === "=") {
           colorFillChange(ch, x, y, "gray");
         } else if (strInfo[position].name === "number") {
           colorFillChange(ch, x, y, "green");
         } else if (strInfo[position].name === "console.log") {
-          colorFillChange(ch, x, y, "blue");
-        } else if (strInfo[position].name === "string"){
+          colorFillChange(ch, x, y, "#4EC9B0");
+        } else if (strInfo[position].name === "string") {
           colorFillChange(ch, x, y, "orange");
         }
         x += context.measureText(ch).width;
@@ -273,31 +239,30 @@ function getAllNumbers(str) {
   tmpArr = [];
   while ((match = re.exec(str)) != null) {
     var obj = {
-      name:"number",
-      index:match["index"],
+      name: "number",
+      index: match["index"],
       len: match[0].length
-    }
+    };
     tmpArr.push(obj);
   }
   return tmpArr;
   // To - do - Improve by returning all instances of a number,not just first.
 }
+
 function getAllStrings(str) {
   var re = /\".*?\"/g,
     str = str;
   tmpArr = [];
   while ((match = re.exec(str)) != null) {
     var obj = {
-      name:"string",
-      index:match["index"],
+      name: "string",
+      index: match["index"],
       len: match[0].length
-    }
-    
-    
+    };
+
     tmpArr.push(obj);
   }
   return tmpArr;
-  
 }
 
 function removeEmptyObj(arr) {
