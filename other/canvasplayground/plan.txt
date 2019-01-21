@@ -1,6 +1,0 @@
-Metodi: 
-
-    1. Prvi pristup bio bi da uradim metod za svaki highlight posebno, medjutim otezava mi mehanika kanvasa, jer ako pokrenem funkciju da crta kanvas, ne mogu da je zaustavim. Posle ce crtati slova preko vec nacrtanih, i boja nece biti ista. Jednom pokrenuto crtanje je bi trebalo sve odjednom da uradi. Ono sto je problem, je ako imam dva ili vise "keyworda" u istom redu, onda cu morati callbackove da uradim ili neki fazon da nastavljam dalje kada iscrtam jedan. Callback je jedna opcija, ali sumnjam da umem to da organizujem.
-
-
--- Metod da sortiram objekte po indexu, da bi islo redom od najmanjeg do najveceg.
