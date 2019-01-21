@@ -157,7 +157,7 @@ colorCanvas(ass);
 
 // Images made from canvas
 var can = document.getElementById("canvas-result");
-convertCanvasToImage(can);
+canvasToImage(can);
 
 
 function marker(str, x, y) {
@@ -224,7 +224,7 @@ function marker(str, x, y) {
 
 
 
-function convertCanvasToImage(canvas) {
+function canvasToImage(canvas) {
 	var image = new Image();
   image.src = canvas.toDataURL("image/png");
   document.body.appendChild(image);
