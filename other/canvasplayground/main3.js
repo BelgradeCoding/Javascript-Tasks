@@ -16,6 +16,7 @@ createHiDPICanvas = function(w, h, ratio) {
     ratio = PIXEL_RATIO;
   }
   var can = document.createElement("canvas");
+  can.setAttribute("id","canvas-result");
   can.width = w * ratio;
   can.height = h * ratio;
   can.style.width = w + "px";
@@ -145,12 +146,21 @@ function colorCanvas(task) {
     var line = task[k];
 
     y += yIndex;
-    texter(line, 0, y);
+    marker(line, 0, y);
   }
 }
+
+
+// Coloring init
 colorCanvas(ass);
 
-function texter(str, x, y) {
+
+// Images made from canvas
+var can = document.getElementById("canvas-result");
+canvasToImage(can);
+
+
+function marker(str, x, y) {
   var _arrayOfRegex = buildArrayFromObjKeys(regObj);
   var strInfo = getAllRegIndexes(str, _arrayOfRegex);
 
@@ -211,6 +221,14 @@ function texter(str, x, y) {
   }
 }
 
+
+
+
+function canvasToImage(canvas) {
+	var image = new Image();
+  image.src = canvas.toDataURL("image/png");
+  document.body.appendChild(image);
+}
 function colorFillChange(char, x, y, color) {
   context.fillStyle = color;
   context.fillText(char, x, y);
